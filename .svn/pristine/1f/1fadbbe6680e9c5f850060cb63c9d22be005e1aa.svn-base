@@ -1,0 +1,31 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+// Author: Andres Tangarife
+// Created: 2022-09-30
+// Description: Tile dialog for the Concentration Matching Game
+
+namespace Lab01AndresTangarife
+{
+    // Public enum to represent the state of the tile
+    public enum TileState
+    {
+        Hide,
+        Close
+    }
+    // Public Delegate to represent the event of a tile being clicked
+    public delegate void TurnHandler(TileState state);
+    public partial class Tile : Form
+    {
+        public Tile()
+        {
+            InitializeComponent();
+        }
+    }
+}

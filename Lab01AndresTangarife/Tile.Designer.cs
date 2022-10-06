@@ -1,0 +1,66 @@
+﻿namespace Lab01AndresTangarife
+{
+    partial class Tile
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this._Secretelbl = new System.Windows.Forms.Label();
+            this.SuspendLayout();
+            // 
+            // _Secretelbl
+            // 
+            this._Secretelbl.AutoSize = true;
+            this._Secretelbl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._Secretelbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 28.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._Secretelbl.Location = new System.Drawing.Point(0, 0);
+            this._Secretelbl.Name = "_Secretelbl";
+            this._Secretelbl.Size = new System.Drawing.Size(147, 54);
+            this._Secretelbl.TabIndex = 0;
+            this._Secretelbl.Text = "label1";
+            // 
+            // Tile
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(202, 158);
+            this.ControlBox = false;
+            this.Controls.Add(this._Secretelbl);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "Tile";
+            this.Text = "Tile";
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.Label _Secretelbl;
+    }
+}

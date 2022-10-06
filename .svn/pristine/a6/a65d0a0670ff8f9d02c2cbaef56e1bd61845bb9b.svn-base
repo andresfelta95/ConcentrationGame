@@ -1,0 +1,162 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
+// Author: Andres Tangarife
+// Created: 2022-09-30
+// Description: Tile dialog for the Concentration Matching Game
+
+namespace Lab01AndresTangarife
+{
+    // Public enum to represent the state of the tile
+    public enum TileState
+    {
+        Hide,
+        Close
+    }
+    // Public Delegate to represent the event of a tile being clicked
+    public delegate void TurnHandler(TileState state);
+    public partial class Tile : Form
+    {
+        // Public Event to be fire when process user guesses
+        public event EventHandler _guessClick = null;
+        // Public Event to be fire when tile completes processing
+        public event EventHandler _turnComplete = null;
+        // Public string to get and set read/write the  label
+        public string Secret
+        {
+            get
+            {
+                return _Secretelbl.Text;
+            }
+            set
+            {
+                _Secretelbl.Text = value;
+            }
+        }
+        // Public bool set only if true set the  label foreground to black
+        public bool ShowSecret
+        {
+            set
+            {
+                if (value)
+                {
+                    _Secretelbl.ForeColor = Color.Black; // Show the secret
+                }
+                else
+                {
+                    _Secretelbl.ForeColor = Tile.DefaultBackColor; // Hide the secret
+                }
+            }         
+        }
+        // Public bool set only to assign the tag when cheat is activated
+        public bool Cheat
+        {
+            set { }
+        }
+        // Timer to delay the processing
+        private Timer _timer = new Timer();
+        // Constant to represent the max font size
+        private const int _MaxFontSize = 64;
+        // Integer representing the current Font Size
+        private int _CurrentFont = _MaxFontSize;
+        
+        /// <summary>
+        /// Constructor of each Tile
+        /// </summary>
+        public Tile()
+        {
+            InitializeComponent();
+            // Set Form start position to manual
+            this.StartPosition = FormStartPosition.Manual;/// Set the form position to manual
+            this.Text = "Tile";
+            Cheat = false;  // Set initial value of the cheat mode to false
+            _timer.Interval = 20; // Set an interval of 20ms
+            _Secretelbl.Font = new Font(FontFamily.GenericSansSerif, _MaxFontSize); // Set label font size of 64
+            this.BackColor = Color.LightBlue; // Set the background color to light blue
+            _Secretelbl.MouseDown += _Secretelbl_MouseDown;    // Link click event with the _guessClick event created
+            _timer.Tick += _timer_Tick;
+            this.MouseEnter += Tile_MouseEnter;
+            this.MouseLeave += Tile_MouseLeave;
+        }
+        /// <summary>
+        /// This method is called when user clicks the tile
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _Secretelbl_MouseDown(object sender, MouseEventArgs e)
+        {
+            _guessClick?.Invoke(this, new EventArgs()); // Fire the _guessClick event
+        }
+
+        public void _Set(Point location)
+        {
+            this.Location = location;
+        }
+        /// <summary>
+        /// If the mouse leaves the Tile and the cheat mode is on, hide the secret
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        private void Tile_MouseLeave(object sender, EventArgs e)
+        {
+            this.Text = "Tile"; // Set the title to Tile
+        }
+        /// <summary>
+        /// Event that checks when the mouse enter and if the cheat mode is on, show the secret
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        private void Tile_MouseEnter(object sender, EventArgs e)
+        {
+            // if cheat mode is on, show the secret
+            if (/*Cheat*/true)
+            {
+                this.Text = _Secretelbl.Text; // Set the title to show the hidden secret
+            }
+        }
+        /// <summary>
+        /// This event will hide the label when its called
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        private void _timer_Tick(object sender, EventArgs e)
+        {
+            int _fontSize = _CurrentFont;
+            while (_fontSize > 1) // Create an animation reducing the font size
+            {
+                _fontSize--; // Reduce the font size
+                _Secretelbl.Font = new Font(FontFamily.GenericSansSerif, _fontSize); // Set the font size
+            }
+            _timer.Stop(); // Stop the timer
+            ShowSecret = false; // Hide the secret
+            _Secretelbl.Font = new Font(FontFamily.GenericSansSerif, _CurrentFont); // Set the font size to 64 but in the background
+            TileTurnHandler(TileState.Close); // Invoke the event
+        }
+        /// <summary>
+        /// Public method to reset the tile
+        /// </summary>
+        /// <param name="state"></param>
+        public void TileTurnHandler(TileState state)
+        {
+            if (state == TileState.Hide) // If the state is hide
+            {
+                _timer.Start(); // Start the timer
+            }
+            else if (state == TileState.Close) // If the state is close
+            {
+                //_turnComplete(this, new EventArgs()); // Invoke the turn complete event
+                this.Close(); // Close the tile
+            }
+        }
+    }
+}

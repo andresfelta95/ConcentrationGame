@@ -1,0 +1,195 @@
+﻿// Author: Andres Tangarife
+// Created: 2022-09-12
+// Description: Concentration Matching Game using delegates, events, dialogs, and state management
+// Title: Lab01AndresTangarife
+// ==============================================================================
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Lab01AndresTangarife
+{
+    public partial class Form1 : Form
+    {
+        // Member variables
+        private Random _random = new Random();      //Random number generator
+        private Timer _timer = new Timer();         //Timer for the game
+        private List<Tile> _tiles = null;           //List of tiles
+        private List<Tile> _flippedTiles = new List<Tile>();    //List of flipped tiles
+        // Event of type TurnHanfler called turnTile repessenting the envent to handle Tile guesses
+        public event TurnHandler turnTile;
+        // Extra discrete members for the Tile Set Coutn, Match Count, Current match count, and the number of tiles to match
+        private int _tileSetCount = 2; // Number of tile to set in the game
+        private int _matchCount = 2;    // Number of matches to be finded
+        private int _currentMatchCount = 0; // Number of matches finded in the current set
+        private int _tilesToMatch = 0;  // Number of tiles to match in the current set
+
+        // Constructor
+        public Form1()
+        {
+            InitializeComponent();
+            Text = "Lab01 - Concentration";
+            _tiles = new List<Tile>();  // Initialize the list of tiles
+            _Tilelbl.MouseWheel += _Tilelbl_MouseWheel; // Bind Event handler for mousewheel in
+            _timer.Interval = 1000;
+            _timer.Tick += _timer_Tick;
+            _StartBtn.MouseDown += _StartBtn_MouseDown;  // Bind Event handler for muesclickl on Start button
+            this.Shown += Form1_Shown;
+            //turnTile += Form1_turnTile;
+        }
+
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            this.StartPosition = FormStartPosition.Manual;
+            this.Location = new Point(0, 0);
+        }
+
+        /// <summary>
+        /// This method is called when the user clicks on the start button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        private void _StartBtn_MouseDown(object sender, MouseEventArgs e)
+        {
+            
+            if (_tiles.Count > 0)
+            {
+                foreach (Tile tile in _tiles)
+                {
+                    turnTile(TileState.Close);
+                }
+                _tiles.Clear();
+            }
+            
+            _tiles = new List<Tile>(); // Create a new list of tiles
+            _flippedTiles.Clear(); // Clear the list of flipped tiles
+            string tileSet = GetShuffledTileLetters(); // strings to hold each tile secret
+            Point _ReferenceLocation = new Point(this.Bottom, this.Left); // Reference location to place the tiles
+            for (int i = 0; i < (_tileSetCount * _matchCount); i++)
+            {
+                Tile tile = new Tile();     // Create a new tile
+                tile._guessClick += _GuessCallback;  // Bind callback funtion with tile click event
+                tile.ShowSecret = false;    // Hide the secret
+                tile.Secret = tileSet[i].ToString(); // Set the secret
+                //turnTile += tile._turnComplete;    // Add the event handler to the tile
+                tile._Set(_ReferenceLocation);
+                if (_ReferenceLocation.X + tile.Width > 2000)
+                {
+                    _ReferenceLocation.X = this.Bottom;
+                    _ReferenceLocation.Y += tile.Height;
+                }
+                else
+                {
+                    _ReferenceLocation.X += tile.Width;
+                }
+                _tiles.Add(tile);
+            }
+        }
+        /// <summary>
+        /// This method is called when the user clicks on the tile
+        /// </summary>
+        /// <param name="sender"> Tile </param>
+        /// <param name="e"> Mouse button </param>
+        public void _GuessCallback(object sender, EventArgs e)
+        {
+            if (!(sender is Tile tl))
+            {
+                return;
+            }
+            if (_flippedTiles.Contains(tl))
+            {
+                return;
+            }
+            if (_flippedTiles.Count == _tilesToMatch)
+            {
+                return;
+            }
+            _flippedTiles.Add(tl);  // Add the tile to the flipped tiles list
+            // Add sender's Turn Handler to the tile
+            tl.ShowSecret = true;  // Expose secret of the tile
+            if (_flippedTiles.Count == _tilesToMatch)
+            {
+                // Turn is over
+                if (_flippedTiles[0].Secret == _flippedTiles[1].Secret)
+                {
+                    // Match found
+                    _matchCount++;
+                    _currentMatchCount++;
+                    if (_currentMatchCount == _tilesToMatch)
+                    {
+                        // Set is over
+                        _currentMatchCount = 0;
+                        _tileSetCount++;
+                        _tilesToMatch++;
+                        _StartBtn_MouseDown(this, null);
+                    }
+                }
+                else
+                {
+                    // No match found
+                    _timer.Start();
+                }
+            }
+        }
+        /// <summary>
+        /// Methoid to get string containing the Letters to be used in the game
+        /// </summary>
+        /// <returns></returns>
+        private string GetShuffledTileLetters()
+        {
+            List<char> letters = new List<char>();  // List to store the letters
+            for (int i = 0; i < _tileSetCount; i++)
+            {
+                char lt = 'A';  // Start with A
+                for (int j = 0; j < _matchCount; j++)
+                {
+                    letters.Add(lt); // Add the letter to the list the match count number of times
+                }
+                lt++;   // Increment the letter
+            }
+            // Shuffle the letters with a Fisher-Yates shuffle
+            for(int i = 0; i < letters.Count; i++)
+            {
+                    int j = _random.Next(i, letters.Count);
+                    char temp = letters[i];
+                    letters[i] = letters[j];
+                    letters[j] = temp;
+            }
+            return new string(letters.ToArray()); // Return the letters as a string
+        }
+        /// <summary>
+        /// This method is called when the mouse wheel is moved over the Set Tile Count label
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        private void _Tilelbl_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (e.Delta > 0)
+            {
+                _tileSetCount++;
+            }
+            else
+            {
+                if (_tileSetCount-- < 3)
+                {
+                    _tileSetCount = 2;
+                }
+            }
+            _Tilelbl.Text = $"Set Tile Count: {_tileSetCount}";
+        }
+
+        private void _timer_Tick(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

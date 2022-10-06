@@ -1,0 +1,49 @@
+﻿// Author: Andres Tangarife
+// Created: 2022-09-12
+// Description: Concentration Matching Game using delegates, events, dialogs, and state management
+// Title: Lab01AndresTangarife
+// ==============================================================================
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Lab01AndresTangarife
+{
+    public partial class Form1 : Form
+    {
+        // Member variables
+        private Random _random = new Random();      //Random number generator
+        private Timer _timer = new Timer();         //Timer for the game
+        private List<Tile> _tiles = null;           //List of tiles
+        private List<Tile> _flippedTiles = new List<Tile>();    //List of flipped tiles
+        // Event of type TurnHanfler called turnTile repessenting the envent to handle Tile guesses
+        //public event TurnHandler turnTile;
+        // Extra discrete members for the Tile Set Coutn, Match Count, Current match count, and the number of tiles to match
+        private int _tileSetCount = 0;
+        private int _matchCount = 0;
+        private int _currentMatchCount = 0;
+        private int _tilesToMatch = 0;
+
+        // Constructor
+        public Form1()
+        {
+            InitializeComponent();
+            Text = "Lab01 - Concentration";
+            _timer.Interval = 1000;
+            _timer.Tick += _timer_Tick;
+            //turnTile += Form1_turnTile;
+        }
+
+        private void _timer_Tick(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

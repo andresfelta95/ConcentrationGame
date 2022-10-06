@@ -1,0 +1,103 @@
+﻿namespace Lab01AndresTangarife
+{
+    partial class Form1
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this._Tilelbl = new System.Windows.Forms.Label();
+            this._Matchlbl = new System.Windows.Forms.Label();
+            this._CheatChckBx = new System.Windows.Forms.CheckBox();
+            this._StartBtn = new System.Windows.Forms.Button();
+            this.SuspendLayout();
+            // 
+            // _Tilelbl
+            // 
+            this._Tilelbl.AutoSize = true;
+            this._Tilelbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._Tilelbl.Location = new System.Drawing.Point(37, 37);
+            this._Tilelbl.Name = "_Tilelbl";
+            this._Tilelbl.Size = new System.Drawing.Size(170, 32);
+            this._Tilelbl.TabIndex = 0;
+            this._Tilelbl.Text = "Tiles Sets: 2";
+            // 
+            // _Matchlbl
+            // 
+            this._Matchlbl.AutoSize = true;
+            this._Matchlbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._Matchlbl.Location = new System.Drawing.Point(290, 37);
+            this._Matchlbl.Name = "_Matchlbl";
+            this._Matchlbl.Size = new System.Drawing.Size(152, 32);
+            this._Matchlbl.TabIndex = 1;
+            this._Matchlbl.Text = "Matches: 2";
+            // 
+            // _CheatChckBx
+            // 
+            this._CheatChckBx.AutoSize = true;
+            this._CheatChckBx.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._CheatChckBx.Location = new System.Drawing.Point(532, 37);
+            this._CheatChckBx.Name = "_CheatChckBx";
+            this._CheatChckBx.Size = new System.Drawing.Size(149, 36);
+            this._CheatChckBx.TabIndex = 2;
+            this._CheatChckBx.Text = "Cheats ?";
+            this._CheatChckBx.UseVisualStyleBackColor = true;
+            // 
+            // _StartBtn
+            // 
+            this._StartBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._StartBtn.Location = new System.Drawing.Point(761, 33);
+            this._StartBtn.Name = "_StartBtn";
+            this._StartBtn.Size = new System.Drawing.Size(165, 39);
+            this._StartBtn.TabIndex = 3;
+            this._StartBtn.Text = "START";
+            this._StartBtn.UseVisualStyleBackColor = true;
+            // 
+            // Form1
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(964, 97);
+            this.Controls.Add(this._StartBtn);
+            this.Controls.Add(this._CheatChckBx);
+            this.Controls.Add(this._Matchlbl);
+            this.Controls.Add(this._Tilelbl);
+            this.MaximizeBox = false;
+            this.Name = "Form1";
+            this.Text = "Form1";
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.Label _Tilelbl;
+        private System.Windows.Forms.Label _Matchlbl;
+        private System.Windows.Forms.CheckBox _CheatChckBx;
+        private System.Windows.Forms.Button _StartBtn;
+    }
+}
+
